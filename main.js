@@ -7,17 +7,19 @@ function main () {
     const provNode = document.getElementById("providers")
 
 
-    fetch("https://api.jackalprotocol.com/jackal-dao/canine-chain/storage/active_providers").then(r => r.json()).then(res => {
+    fetch("https://testnet-api.jackalprotocol.com/jackal-dao/canine-chain/storage/providers").then(r => r.json()).then(res => {
         const providers = res["providers"]
         console.log(providers)
 
 
         for (const provider of providers) {
-            const adr = provider.address
-            fetch("https://api.jackalprotocol.com/jackal-dao/canine-chain/storage/providers/" + provider.address).then(r => r.json()).then(res => {
-                const ip = res.providers.ip
+            const adr = provider.ip
+            const a = provider.address
 
-                fetch(ip + "/version").then(r => r.json()).then(res => {
+            console.log(adr)
+
+
+                fetch(adr + "/version").then(r => r.json()).then(res => {
                     console.log(res)
 
                     const li = document.createElement("tr")
@@ -29,13 +31,13 @@ function main () {
                     version.classList.add("version")
                     version.appendChild(v)
 
-                    const n = document.createTextNode(adr)
+                    const n = document.createTextNode(a)
                     const address = document.createElement("td")
                     address.classList.add("address")
                     address.appendChild(n)
 
 
-                    const ipN = document.createTextNode(ip)
+                    const ipN = document.createTextNode(adr)
                     const pip = document.createElement("td")
                     pip.classList.add("ip")
                     pip.appendChild(ipN)
@@ -45,8 +47,10 @@ function main () {
                     li.appendChild(version)
 
                     provNode.appendChild(li)
+                }).catch(e => {
+                    console.error(e)
                 })
-            })
+
 
 
         }
