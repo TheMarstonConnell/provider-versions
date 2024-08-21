@@ -7,15 +7,15 @@ function main () {
     const provNode = document.getElementById("providers")
 
 
-    fetch("https://api.jackalprotocol.com/jackal-dao/canine-chain/storage/active_providers").then(r => r.json()).then(res => {
+    fetch("https://api.jackalprotocol.com/jackal/canine-chain/storage/active_providers").then(r => r.json()).then(res => {
         const providers = res["providers"]
         console.log(providers)
 
 
         for (const provider of providers) {
             const adr = provider.address
-            fetch("https://api.jackalprotocol.com/jackal-dao/canine-chain/storage/providers/" + provider.address).then(r => r.json()).then(res => {
-                const ip = res.providers.ip
+            fetch("https://api.jackalprotocol.com/jackal/canine-chain/storage/providers/" + provider.address).then(r => r.json()).then(res => {
+                const ip = res.provider.ip
 
                 fetch(ip + "/version").then(r => r.json()).then(res => {
                     console.log(res)
