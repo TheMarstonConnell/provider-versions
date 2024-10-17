@@ -14,7 +14,7 @@ function main () {
 
         for (const provider of providers) {
             const adr = provider.address
-            fetch("https://api.jackalprotocol.com/jackal/canine-chain/storage/providers/" + provider.address).then(r => r.json()).then(res => {
+            fetch("https://api.jackalprotocol.com/jackal/canine-chain/storage/providers/" + adr).then(r => r.json()).then(res => {
                 const ip = res.provider.ip
 
                 fetch(ip + "/version").then(r => r.json()).then(res => {
@@ -40,11 +40,23 @@ function main () {
                     pip.classList.add("ip")
                     pip.appendChild(ipN)
 
-                    li.appendChild(address)
-                    li.appendChild(pip)
-                    li.appendChild(version)
+                    fetch("https://api.jackalprotocol.com/cosmos/bank/v1beta1/balances/" + adr).then(r => r.json()).then(res => {
+                        console.log(res)
 
-                    provNode.appendChild(li)
+                        const r = res.balances[0]
+                        console.log(r)
+                        const v = document.createTextNode(r.amount ? r.amount / 1000000 : "n/a")
+                        const bal = document.createElement("td")
+                        bal.classList.add("bank")
+                        bal.appendChild(v)
+
+                        li.appendChild(address)
+                        li.appendChild(pip)
+                        li.appendChild(version)
+                        li.appendChild(bal)
+
+                        provNode.appendChild(li)
+                    })
                 })
             })
 
