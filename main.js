@@ -16,6 +16,10 @@ function main () {
             const adr = provider.address
             fetch("https://api.jackalprotocol.com/jackal/canine-chain/storage/providers/" + adr).then(r => r.json()).then(res => {
                 const ip = res.provider.ip
+                const burns = document.createTextNode(res.provider.burned_contracts)
+                const burnsP = document.createElement("td")
+                burnsP.classList.add("burns")
+                burnsP.appendChild(burns)
 
                 fetch(ip + "/version").then(r => r.json()).then(res => {
                     console.log(res)
@@ -40,6 +44,8 @@ function main () {
                     pip.classList.add("ip")
                     pip.appendChild(ipN)
 
+                    
+
                     fetch("https://api.jackalprotocol.com/cosmos/bank/v1beta1/balances/" + adr).then(r => r.json()).then(res => {
                         console.log(res)
 
@@ -54,6 +60,7 @@ function main () {
                         li.appendChild(pip)
                         li.appendChild(version)
                         li.appendChild(bal)
+                        li.appendChild(burnsP)
 
                         provNode.appendChild(li)
                     })
